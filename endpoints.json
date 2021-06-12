@@ -1,7 +1,0 @@
-{
-  "endpoints" : [
-    "/services/BusinessServices/DataCollection/contracts/1.5/Award",
-    "/services/BusinessServices/DataCollection/contracts/1.5/IDV",
-    "/services/BusinessServices/DataCollection/contracts/1.5/OtherTransactionAward",
-    "/services/BusinessServices/DataCollection/contracts/1.5/OtherTransactionIDV"]
-}
