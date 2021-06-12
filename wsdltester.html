@@ -25,30 +25,7 @@
 <body>
 
 <br>
-<select onChange="setSoapService(this.value);">
-    <option value="/services/BusinessServices/DataCollection/contracts/1.5/Award">
-        Award
-    </option>
-    <option value="/services/BusinessServices/DataCollection/contracts/1.5/IDV">IDV
-    </option>
-    <option value="/services/BusinessServices/DataCollection/contracts/1.5/OtherTransactionAward">
-        OTA Award
-    </option>
-    <option value="/services/BusinessServices/DataCollection/contracts/1.5/OtherTransactionIDV">
-        OTA IDV
-    </option>
-    <option value="/services/GUIServices/DataCollection/contracts/1.5/Award">GUI Award
-    </option>
-    <option value="/services/GUIServices/DataCollection/contracts/1.5/IDV">GUI IDV
-    </option>
-    <option value="/services/GUIServices/DataCollection/contracts/1.5/OtherTransactionAward">
-        GUI OTA Award
-    </option>
-    <option value="/dcisng/services/GUIServices/DataCollection/contracts/1.5/OtherTransactionIDV">
-        GUI OTA IDV
-    </option>
-
-</select>
+<select id="dropdown" onChange="setSoapService(this.value);"></select>
 &nbsp;&nbsp;&nbsp;
 <button id="submit" onclick="submitPayload();">Submit Payload</button>
 <br>
@@ -76,7 +53,18 @@
         serverUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
     }
 
-    var soapServiceURL = serverUrl + '/' + pathArr[1] + '/services/BusinessServices/DataCollection/contracts/1.5/Award';
+    var endpoints = [
+       [ "Award", "/services/BusinessServices/DataCollection/contracts/1.5/Award"],
+       [ "IDV", "/services/BusinessServices/DataCollection/contracts/1.5/IDV"],
+       [ "OTA Award", "/services/BusinessServices/DataCollection/contracts/1.5/OtherTransactionAward"],
+       [ "OTA IDV", "/services/BusinessServices/DataCollection/contracts/1.5/OtherTransactionIDV"],
+       [ "GUI Award", "/services/GUIServices/DataCollection/contracts/1.5/Award"],
+       [ "GUI IDV", "/services/GUIServices/DataCollection/contracts/1.5/IDV"],
+       [ "GUI OTA Award", "/services/GUIServices/DataCollection/contracts/1.5/OtherTransactionAward"],
+       [ "GUI OTA IDV", "/services/GUIServices/DataCollection/contracts/1.5/OtherTransactionIDV"]
+    ] 
+
+    var soapServiceURL = serverUrl + '/' + pathArr[1] + endpoints[0][1];
     $("#theService").text('Payload: ' + soapServiceURL);
 
     function setSoapService(service) {
@@ -111,20 +99,13 @@
     }
 
     function loadData() {
-        $.ajax({
-            url: serverUrl + '/' + pathArr[1] + + "endpoints.json",
-            dataType: "json",
-            success: function(response) {
-                $.each(response.endpoints, function(item) {
-                    informationArray.push(item);
-                    console.log('ITEM ' + item);
-                });
-            }
+        var $dropdown = $("#dropdown");
+        $.each(endpoints, function(key,val) {
+            $dropdown.append($("<option />").val(val[1]).text(val[0]));
         });
     }
 
-   // TODO load endpoints via json file.
-  //  loadData();
+    loadData();
 
     function formatXml(xml) {
         var formatted = '';
